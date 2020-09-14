@@ -1,3 +1,14 @@
+# Folder structure
+```
+sudo mkdir -p /var/vm
+sudo mkdir -p /var/vm/disk
+sudo mkdir -p /var/vm/fw
+sudo mkdir -p /var/vm/iso
+sudo mkdir -p /var/vm/scripts
+sudo mkdir -p /var/vm/cfg
+sudo mkdir -p /var/vm/docs
+sudo mkdir -p /var/vm/systemd
+```
 # Setting up base OS, permissions and environment
 
 Once we have the kernel compiled, we can proceed to set up base OS.
@@ -17,6 +28,11 @@ chmod +x setup/setup-modules.sh
 bash -x ./setup/setup-modules.sh
 sudo update-initramfs -u
 ```
+## Install and configure qemu
+```
+mkdir -p /tmp/qemu
+unzip qemu.zip -d /tmp/qemu/
+mv /tmp/qemu/bios.bin
 ## Install and configure kernel
 
 Then we can install the kernel.
