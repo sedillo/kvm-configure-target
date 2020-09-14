@@ -1,0 +1,4 @@
+KERNEL=="tun", GROUP="kvm", MODE="0660", OPTIONS+="static_node=net/tun"
+SUBSYSTEM=="macvtap", GROUP="kvm", MODE="0660"
+KERNEL=="tun", GROUP="kvm", MODE="0660", OPTIONS+="static_node=net/tun"
+SUBSYSTEM=="macvlan", GROUP="kvm", MODE="0660"

@@ -1,0 +1,8 @@
+KERNEL=="kvm", NAME="%k", GROUP="kvm", MODE="0660"
+KERNEL=="kvm", MODE="0660", GROUP="kvm"
+DEVPATH=="kvm", MODE="0660", GROUP="kvm"
+KERNEL=="vfio", MODE="0660", GROUP="kvm"
+DEVPATH=="vfio/vfio", MODE="0660", GROUP="kvm"
+SUBSYSTEM=="vfio", MODE="0660", GROUP="kvm"
+DEVPATH=="vfio/0", MODE="0660", GROUP="kvm"
+SUBSYSTEM=="usb", MODE="0660", GROUP="kvm"
