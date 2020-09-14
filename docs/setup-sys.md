@@ -57,16 +57,16 @@ Additionally we need to add udev rules to set correct group (e.g. kvm, vfio, tun
 
 File: /etc/udev/rules.d/10-kvm.rules
 ```
-cp ./udev/10-kvm.rules /etc/udev/rules.d/10-kvm.rules
+sudo cp ./udev/10-kvm.rules /etc/udev/rules.d/10-kvm.rules
 ```
 File: /etc/udev/rules.d/80-tap-kvm-group.rules
 ```
-cp ./udev/10-kvm.rules  /etc/udev/rules.d/80-tap-kvm-group.rules
+sudo cp ./udev/10-kvm.rules  /etc/udev/rules.d/80-tap-kvm-group.rules
 ```
 ## Reboot
 Then reboot.
 ```
-$ sudo shutdown -r now
+sudo shutdown -r now
 ```
 
 Let say user vmadmin is the designated user, below is the script:
