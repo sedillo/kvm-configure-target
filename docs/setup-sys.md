@@ -43,7 +43,15 @@ Before rebooting the system, we need to make sure this new kernel is used as def
 $ sudo nano /etc/default/grub
 ```
 
-Here are they key entries we need to update. Adjust kernel version ( in this case 5.4.54-intelgvt+) to the version of the your kernel.
+Here are the GRUB entries for debugging.
+
+```
+GRUB_TIMEOUT_STYLE=menu
+GRUB_TIMEOUT=-1
+GRUB_CMDLINE_LINUX_DEFAULT="splash quiet i915.enable_gvt=1 i915.enable_fbc=0 kvm.ignore_msrs=1 intel_iommu=on,igfx_off drm.debug=0"
+```
+
+Here are they key entries for production that you need to update. Adjust kernel version ( in this case 5.4.54-intelgvt+) to the version of the your kernel.
 
 ```
 GRUB_DEFAULT="Advanced options for Ubuntu>Ubuntu, with Linux 5.4.54-intelgvt+"
