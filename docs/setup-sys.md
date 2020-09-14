@@ -10,37 +10,24 @@ The first step we must do is to ensure the right modules are loaded with this ke
 * vfio-mdev
 * vfio-pci
 
-The following [script](../setup/setup-modules.sh) automate this process.
+Use the following instructions to automate this process.
 
 ```
-#!/bin/bash
-#==================================================
-# Source of Information
-# https://wiki.ubuntu.com/KernelTeam/GitKernelBuild
-#==================================================
-modules=(kvmgt vfio-iommu-type1 vfio-mdev vfio-pci)
-
-for i in "${modules[@]}"
-  do
-    echo $i
-sudo -s <<RUNASSUDO_MODULES
-    grep -qxF $i /etc/initramfs-tools/modules || echo $i >> /etc/initramfs-tools/modules
-RUNASSUDO_MODULES
-done
-
+chmod +x setup/setup-modules.sh
+bash -x ./setup/setup-modules.sh
 sudo update-initramfs -u
 ```
 ## Install and configure kernel
 
 Then we can install the kernel.
 ```
-$ cd /home/user/buildfolder
-$ sudo dpkg -i linux-image-*.deb linux-headers-*.deb
+cd /home/user/buildfolder
+sudo dpkg -i linux-image-*.deb linux-headers-*.deb
 ```
 Before rebooting the system, we need to make sure this new kernel is used as default and the right kernel options are turned on. This can be done by modifying Grub configuration (/etc/default/grub)
 
 ```
-$ sudo nano /etc/default/grub
+sudo nano /etc/default/grub
 ```
 
 Here are the GRUB entries for debugging.
@@ -60,20 +47,40 @@ GRUB_CMDLINE_LINUX_DEFAULT="splash quiet i915.enable_gvt=1 i915.enable_fbc=0 kvm
 
 The next step will be to update Grub
 ```
-$ sudo update-grub2
+sudo update-grub2
 ```
 ## Setting up subsystem with the right permission
 
 Running guest VM as root is not preferred. The recommended way is to only allow certain group to have that right. Typically for KVM hypervisor, the group name is 'kvm'. Thus the recommended is to add the designated user to 'kvm' group. Other privilege such as serial port ownership can be added by adding 'dialout' group to the user. Additionally if Spice or VNC remote access is required, user will need to access /dev/dri/render128 which is allowed by group 'render' or 'video' if 'render' is not defined.
 
+Additionally we need to add udev rules to set correct group (e.g. kvm, vfio, tun/tap devices).
+
+File: /etc/udev/rules.d/10-kvm.rules
+```
+cp ./udev/10-kvm.rules /etc/udev/rules.d/10-kvm.rules
+```
+File: /etc/udev/rules.d/80-tap-kvm-group.rules
+```
+cp ./udev/10-kvm.rules  /etc/udev/rules.d/80-tap-kvm-group.rules
+```
+## Reboot
+Then reboot.
+```
+$ sudo shutdown -r now
+```
+
 Let say user vmadmin is the designated user, below is the script:
 
 ```
-$ sudo usermod -a -G kvm vmadmin
-$ sudo usermod -a -G render vmadmin
-- or -
-$ sudo usermod -a -G video vmadmin
-$ sudo usermod -a -G dialout vmadmin
+su vmadmin 
+
+TODO
+#sudo usermod -a -G kvm $USER
+#Throws error
+#sudo usermod -a -G render $USER
+#Throws error
+sudo usermod -a -G video $USER
+sudo usermod -a -G dialout $USER
 ```
 Besides permission, the designated user should also be give unlimiter memory lock capability. The following lines can be added to /etc/security/limits.conf
 ```
@@ -81,31 +88,7 @@ vmadmin       hard    memlock         unlimited
 vmadmin       soft    memlock         unlimited
 ```
 
-Additionally we need to add udev rules to set correct group (e.g. kvm, vfio, tun/tap devices).
 
-File: /etc/udev/rules.d/10-kvm.rules
-```
-KERNEL=="kvm", NAME="%k", GROUP="kvm", MODE="0660"
-KERNEL=="kvm", MODE="0660", GROUP="kvm"
-DEVPATH=="kvm", MODE="0660", GROUP="kvm"
-KERNEL=="vfio", MODE="0660", GROUP="kvm"
-DEVPATH=="vfio/vfio", MODE="0660", GROUP="kvm"
-SUBSYSTEM=="vfio", MODE="0660", GROUP="kvm"
-DEVPATH=="vfio/0", MODE="0660", GROUP="kvm"
-SUBSYSTEM=="usb", MODE="0660", GROUP="kvm"
-```
-File: /etc/udev/rules.d/80-tap-kvm-group.rules
-```
-KERNEL=="tun", GROUP="kvm", MODE="0660", OPTIONS+="static_node=net/tun"
-SUBSYSTEM=="macvtap", GROUP="kvm", MODE="0660"
-KERNEL=="tun", GROUP="kvm", MODE="0660", OPTIONS+="static_node=net/tun"
-SUBSYSTEM=="macvlan", GROUP="kvm", MODE="0660"
-```
-## Reboot
-Then reboot.
-```
-$ sudo shutdown -r now
-```
 ## Verifying correct kernel and features are turned on.
 
 Once the system comes back online, we should be able to verify if the kernel is properly loaded by checking /proc/cmdline
