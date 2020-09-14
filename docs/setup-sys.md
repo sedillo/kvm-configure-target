@@ -8,6 +8,8 @@ sudo mkdir -p /var/vm/scripts
 sudo mkdir -p /var/vm/cfg
 sudo mkdir -p /var/vm/docs
 sudo mkdir -p /var/vm/systemd
+
+sudo apt install -y libsdl2-2.0-0
 ```
 # Setting up base OS, permissions and environment
 
