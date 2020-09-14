@@ -32,7 +32,10 @@ sudo update-initramfs -u
 ```
 mkdir -p /tmp/qemu
 unzip qemu.zip -d /tmp/qemu/
-mv /tmp/qemu/bios.bin
+sudo mv /tmp/qemu/bios.bin /var/vm/fw/
+sudo tar xvzf /tmp/qemu/qemu.tar.gz -C /usr
+
+```
 ## Install and configure kernel
 
 Then we can install the kernel.
