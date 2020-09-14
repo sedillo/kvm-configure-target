@@ -7,4 +7,4 @@ Base system preparation involves:
 
 Key area to configure to ensure maximum utilization of hardware are:
 - VT-d setting: enabled
-- Graphic Aperture size: 1024MB
+- Advanced -> Video -> Graphic Aperture size: 1024MB
