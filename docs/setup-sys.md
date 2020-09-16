@@ -1,15 +1,21 @@
 # Folder structure
 ```
-sudo mkdir -p /var/vm
-sudo mkdir -p /var/vm/disk
-sudo mkdir -p /var/vm/fw
-sudo mkdir -p /var/vm/iso
-sudo mkdir -p /var/vm/scripts
-sudo mkdir -p /var/vm/cfg
-sudo mkdir -p /var/vm/docs
-sudo mkdir -p /var/vm/systemd
+#need sudo access to modify directories in /var
+sudo su
+apt install -y libsdl2-2.0-0 libspice-server-dev git
 
-sudo apt install -y libsdl2-2.0-0 libspice-server-dev
+mkdir -p /var/vm
+cd /var/vm
+git clone https://github.com/sedillo/kvm-target-scripts .
+
+#Make sure all files exist
+mkdir -p /var/vm/disk
+mkdir -p /var/vm/fw
+mkdir -p /var/vm/iso
+mkdir -p /var/vm/scripts
+mkdir -p /var/vm/cfg
+mkdir -p /var/vm/docs
+mkdir -p /var/vm/systemd
 ```
 # Setting up base OS, permissions and environment
 
