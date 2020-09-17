@@ -3,6 +3,12 @@
 #need sudo access to modify directories in /var
 sudo su
 apt install -y libsdl2-2.0-0 libspice-server-dev git
+apt install -y git libfdt-dev libpixman-1-dev libssl-dev vim socat libsdl2-dev libspice-server-dev autoconf libtool xtightvncviewer tightvncserver x11vnc uuid-runtime uuid uml-utilities bridge-utils python-dev liblzma-dev libc6-dev libegl1-mesa-dev libepoxy-dev libdrm-dev libgbm-dev libaio-dev libusb-1.0.0-dev libgtk-3-dev bison libcap-dev libattr1-dev flex
+apt install -y wget mtools ovmf dmidecode python3-usb python3-pyudev pulseaudio jq
+apt install -y uuid-dev nasm acpidump iasl
+
+
+
 
 mkdir -p /var/vm
 cd /var/vm
