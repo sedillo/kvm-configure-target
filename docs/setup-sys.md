@@ -16,6 +16,7 @@ git clone https://github.com/sedillo/kvm-target-scripts .
 
 #Make sure all files exist
 mkdir -p /var/vm/disk
+mkdir -p /var/vm/civ
 mkdir -p /var/vm/fw
 mkdir -p /var/vm/iso
 mkdir -p /var/vm/scripts
