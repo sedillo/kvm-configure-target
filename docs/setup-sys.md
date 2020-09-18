@@ -48,7 +48,9 @@ sudo update-initramfs -u
 mkdir -p /tmp/qemu
 unzip qemu.zip -d /tmp/qemu/
 sudo mv /tmp/qemu/bios.bin /var/vm/fw/
+sudo cp /tmp/qemu/OVMF.fd /usr/share/qemu/
 sudo mv /tmp/qemu/OVMF.fd /var/vm/fw/
+sudo cp /var/vm/fw/
 sudo tar xvzf /tmp/qemu/qemu.tar.gz -C /usr
 
 ```
